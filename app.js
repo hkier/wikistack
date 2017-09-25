@@ -28,7 +28,7 @@ app.use('/',routes)
 
 models.User.sync({})
 .then(function () {
-    return models.Page.sync({})
+    return models.Page.sync({force: true})
 })
 .then(app.listen(3000, () => {
     console.log(chalk.yellow('listening on port 3000'))

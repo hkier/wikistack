@@ -16,14 +16,30 @@ var Page = db.define('page', {
     },
     status: {
         type: Sequelize.ENUM('open', 'closed')
-    },
-    date: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+    // },
+    // date: {
+    //     type: Sequelize.DATE,
+    //     defaultValue: Sequelize.NOW
     }
 }, {
+        hooks:
+
+        {
+            beforeValidate: function UrlTitle(text) {
+                let title = text.dataValues.title
+                if (!title) {
+                    let x = Math.floor(10000000 * Math.random())
+                    title = x.toString()
+                }
+                console.log(text)
+                text.dataValues.urlTitle = title.replace(/\s+/g, '_').replace(/\W/g, '')
+
+
+            }
+        },
         getterMethods: {
             route() {
+                let urlTitle = this.dataValues.urlTitle
                 return '/wiki/' + urlTitle
             }
         }
